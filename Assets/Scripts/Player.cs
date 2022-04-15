@@ -19,7 +19,8 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Text _healthText;
 
-    
+    public AudioClip coinSound;
+    public AudioClip planeHitSound;
 
 
     void Start()
@@ -43,11 +44,11 @@ public class Player : MonoBehaviour
 
     public void Shoot()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        /*if(Input.GetKeyDown(KeyCode.Space))
         {
             Instantiate(_bullletPrefab,transform.position + new Vector3(0, _bulletAdjustment,0),Quaternion.identity);
             _audioSource.Play();
-        }
+        }*/
        
     }
 
@@ -92,8 +93,18 @@ public class Player : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(1);
+            _audioSource.clip = planeHitSound;
+            _audioSource.Play();
         }
-        
+
+        if (collision.gameObject.CompareTag("Star"))
+        {
+            ScoreManager.instance.IncreaseScore(1);
+            Destroy(collision.gameObject);
+            _audioSource.clip = coinSound;
+            _audioSource.Play();
+        }
+
     }
 
     public void TakeDamage(int damageAmount)
@@ -103,7 +114,9 @@ public class Player : MonoBehaviour
         _healthText.text = _health.ToString();
         if (_health <= 0)
         {
+            
             UIManager.instance.ShowGameOverText();
+            SpawnManager.instance.StopSpawning();
             Destroy(this.gameObject);
         }
     }

@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+using System;
 
 public class ScoreManager : MonoBehaviour
 {
@@ -24,7 +26,26 @@ public class ScoreManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (_score == SpawnManager.instance._totalCollectables)
+        {
+            if (SceneManager.GetActiveScene().name == "3")
+            {
+                UIManager.instance.ChangeText("Congratulations! You have completed the game");
+                UIManager.instance.LoadSceneDelay(0);
+            }
+            else
+            {
+                UIManager.instance.ChangeText("You have completed Level " + SceneManager.GetActiveScene().name);
+                int level = (Convert.ToInt32(SceneManager.GetActiveScene().name) + 1);
+                PlayerPrefs.SetInt(level.ToString(), 1);
+                UIManager.instance.LoadSceneDelay(4);
+            }
+          
+            UIManager.instance.ShowGameOverText();
+            SpawnManager.instance.StopSpawning();
+         
+
+        }
     }
 
     public void IncreaseScore(int scoreAmount)
@@ -37,5 +58,10 @@ public class ScoreManager : MonoBehaviour
             _highScoreText.text = _score.ToString();
         }
        
+    }
+
+    public void LoadScne()
+    {
+
     }
 }

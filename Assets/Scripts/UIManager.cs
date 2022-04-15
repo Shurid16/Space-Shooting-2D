@@ -33,13 +33,35 @@ public class UIManager : MonoBehaviour
         gameOverText.gameObject.SetActive(true);
     }
 
+    public void ChangeText(string text)
+    {
+        gameOverText.text = text;
+    }
+
     public void LoadScene(int sceneNo)
     {
         SceneManager.LoadScene(sceneNo);
     }
 
+    public void LoadSceneDelay(int sceneNo)
+    {
+        StartCoroutine(LoadSceneRoutine(sceneNo));
+    }
+
+    IEnumerator LoadSceneRoutine(int sceneNo)
+    {
+        yield return new WaitForSeconds(3f);
+        LoadScene(sceneNo);
+    }
+
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void ResetLevel()
+    {
+        PlayerPrefs.DeleteAll();
+        LoadScene(0);
     }
 }

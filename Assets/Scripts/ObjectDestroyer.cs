@@ -10,20 +10,30 @@ public class ObjectDestroyer : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
-            if (collision.gameObject.CompareTag("Enemy"))
-            {
-                if(_player!=null)
-                {
-                    _player.TakeDamage(1);
-                }
-               
-                Destroy(collision.gameObject);
-            }
-        
 
-       
-        
+        if (collision.gameObject.CompareTag("Enemy"))
+        {
+            if (_player != null)
+            {
+                //  _player.TakeDamage(1);
+            }
+
+            Destroy(collision.gameObject);
+        }
+
+        if (collision.gameObject.CompareTag("Star"))
+        {
+            if (_player != null)
+            {
+                  _player.TakeDamage(1);
+            }
+
+            Destroy(collision.gameObject);
+        }
+
+
+
+
     }
 
 }
